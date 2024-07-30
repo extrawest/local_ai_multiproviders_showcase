@@ -1,8 +1,11 @@
 import 'package:dart_openai/dart_openai.dart';
 
+import '../utils.dart';
+
 class OpenAiRepository {
   OpenAiRepository();
-  Future<OpenAIChatCompletionModel> initChat(String question) async {
+
+  Future<OpenAIChatCompletionModel> initChat({required String question, required String selectedProvider}) async {
     final systemMessage = OpenAIChatCompletionChoiceMessageModel(
       content: [
         OpenAIChatCompletionChoiceMessageContentItemModel.text(
@@ -20,17 +23,13 @@ class OpenAiRepository {
 
     final requestMessages = [systemMessage, userMessage];
 
-    OpenAIChatCompletionModel chatCompletion = await OpenAI.instance.chat.create(
-      model: "",
-      // model: "gpt-3.5-turbo",
-      messages: requestMessages,
+    final OpenAIChatCompletionModel chatCompletion = await OpenAI.instance.chat.create(
+      model: handleProviderModel(selectedProvider),
+      messages: selectedProvider == 'Groq' ? [userMessage] : requestMessages,
+
       maxTokens: 200,
-
-
     );
 
     return chatCompletion;
   }
 }
-
-
