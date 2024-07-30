@@ -7,11 +7,12 @@ sealed class ChatEvent extends Equatable {
 
 class SendMessage extends ChatEvent {
   final String request;
+  final String selectedProvider;
 
-  const SendMessage(this.request);
+  const SendMessage({required this.request, required this.selectedProvider});
 
   @override
-  List<Object> get props => [request];
+  List<Object> get props => [request, selectedProvider];
 }
 
 
