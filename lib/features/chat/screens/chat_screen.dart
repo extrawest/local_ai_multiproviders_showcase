@@ -1,25 +1,42 @@
+import 'package:dart_openai/dart_openai.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../ai_provider/utils/ai_provider_enum.dart';
 import '../bloc/chat_bloc.dart';
-
-
+import '../widgets/message_item.dart';
 
 class ChatScreen extends StatefulWidget {
-  const ChatScreen({super.key});
+  final String url;
+  final String apiKey;
+  final Map<String, String> selectedProvider;
+
+  const ChatScreen({
+    super.key,
+    required this.url,
+    required this.apiKey,
+    required this.selectedProvider,
+  });
 
   @override
-  _ChatScreenState createState() => _ChatScreenState();
+  ChatScreenState createState() => ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
+
+  @override
+  void initState() {
+    OpenAI.apiKey = widget.apiKey;
+    OpenAI.baseUrl = widget.url;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter Chat Demo'),
+        title: const Text('Flutter Chat Demo'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -58,13 +75,18 @@ class _ChatScreenState extends State<ChatScreen> {
               decoration: InputDecoration(
                 labelText: 'Enter your message',
                 suffixIcon: IconButton(
-                  icon: Icon(Icons.send),
+                  icon: const Icon(Icons.send),
                   onPressed: () {
                     if (_controller.text.isNotEmpty) {
-                      context.read<ChatBloc>().add(SendMessage(_controller.text));
+                      context.read<ChatBloc>().add(
+                            SendMessage(
+                              request: _controller.text,
+                              selectedProvider: widget.selectedProvider['value'] ?? AIProviders.llamaCpp.name,
+                            ),
+                          );
                       _controller.clear();
                     }
-                    // _sendMessage(_controller.text);
+
                     _controller.clear();
                   },
                 ),
@@ -75,48 +97,4 @@ class _ChatScreenState extends State<ChatScreen> {
       ),
     );
   }
-}
-
-class MessageItem extends StatelessWidget {
-  final bool isUserMessage;
-  final String message;
-
-  const MessageItem({
-    required this.isUserMessage,
-    required this.message,
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      margin: const EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: isUserMessage ? Colors.blueGrey[300] : Colors.grey[300],
-        borderRadius: isUserMessage
-            ? const BorderRadius.only(
-                topLeft: Radius.circular(20.0),
-                bottomLeft: Radius.circular(20.0),
-                bottomRight: Radius.circular(20.0),
-              )
-            : const BorderRadius.only(
-                topRight: Radius.circular(20.0),
-                bottomLeft: Radius.circular(20.0),
-                bottomRight: Radius.circular(20.0),
-              ),
-      ),
-      child: Text(
-        message,
-        textAlign: isUserMessage ? TextAlign.right : TextAlign.left,
-      ),
-    );
-  }
-}
-
-class MessageModel {
-  final String message;
-  final bool isUserMessage;
-
-  MessageModel({required this.message, required this.isUserMessage});
 }
