@@ -1,4 +1,5 @@
-#  AI provider flutter app
+#  Local Ai Multiproviders Showcase
+[![GitHub stars](https://img.shields.io/github/stars/extrawest/local_ai_multiproviders_showcase.svg?style=social&label=Star&maxAge=2592000)](
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)]()
 [![Maintaner](https://img.shields.io/static/v1?label=Oleksandr%20Samoilenko&message=Maintainer&color=red)](mailto:oleksandr.samoilenko@extrawest.com)
 [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)]()
@@ -8,6 +9,11 @@
 ## PROJECT INFO
 - **AI provider Application on the latest version of Flutter**
 - **We were intended to create a an MVP showcase application that allows you to use Groq, OpenAi and llm.cpp providers through single ui. You only need to select one of the providers and start chatting.**
+
+
+## Preview
+
+https://github.com/user-attachments/assets/d23e9136-42fe-48d3-8f95-229888dd9400
 
 ## Features
 - Groq with "mixtral-8x7b-32768"
@@ -57,13 +63,6 @@ ngrok http your_local_url
 ```
 
 Now you are ready to run the project
-
-
-## Preview
-
-https://github.com/user-attachments/assets/d23e9136-42fe-48d3-8f95-229888dd9400
-
-
 
 
 Created by Oleksandr Samoilenko
